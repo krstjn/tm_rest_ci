@@ -1,0 +1,73 @@
+
+@tm_host = http://localhost:3000
+@token =
+
+###
+POST {{tm_host}}/login
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
+
+###
+
+{{tm_host}}/tournaments
+###
+POST {{tm_host}}/tournaments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Pera",
+  "signUpExpiration": null,
+  "maxTeams": 4,
+  "sport": 2,
+  "isPublic": true,
+  "teams": [
+    {
+      "name": "Q",
+      "id": null
+    },
+    {
+      "name": "W",
+      "id": null
+    },
+    {
+      "name": "E",
+      "id": null
+    },
+    {
+      "name": "R",
+      "id": null
+    },
+    {
+      "name": "T",
+      "id": null
+    }
+  ]
+}
+
+###
+{{tm_host}}/tournaments/4
+###
+{{tm_host}}/profile
+Authorization: Bearer {{token}}
+###
+
+POST {{tm_host}}/signup
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
+
+###
+POST {{tm_host}}/tournaments/3/sub
+Authorization: Bearer {{token}}
+
+###
+POST {{tm_host}}/tournaments/2/sub
+Authorization: Bearer {{token}}
