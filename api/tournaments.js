@@ -1,7 +1,9 @@
 const xss = require('xss');
+const robin = require('roundrobin');
 const { paged, query, conditionalUpdate } = require('../db');
 const { validateTournament } = require('../validation');
 const { getProfile } = require('./users');
+
 
 async function getTournament(id) {
   const result = await query(
@@ -52,7 +54,7 @@ async function tournamentsRoute(req, res) {
   const tournaments = result.rows;
 
   const qt = 'SELECT * FROM teams WHERE tournamentId = $1';
-  const qm = 'SELECT * FROM matches WHERE tournamentId = $1';
+  const qm = 'SELECT * FROM matches WHERE tournamentId = $1 ORDER BY round';
 
   const teams = tournaments.map(async t => query(qt, [t.id]));
   const matches = tournaments.map(async t => query(qm, [t.id]));
@@ -198,7 +200,38 @@ async function matchPatchRoute(req, res) {
 }
 
 async function startTournamentPostRoute(req, res) {
-  res.status(501).json({ error: 'Not implemented yet' });
+  const { id } = req.params;
+
+  const tournament = await getTournament(id);
+
+  if (tournament.matches.length > 0) {
+    return res.status(400).json({ error: 'Tournament has already been started' });
+  }
+
+  const tl = tournament.teams.length;
+
+  const round = robin(tl, tournament.teams);
+
+  const matches = [];
+
+  for(let i = 0; i < tournament.rounds; i++) { // eslint-disable-line
+    for (let j = 0; j < round.length; j++) { // eslint-disable-line
+      for(let r = 0; r < round[j].length; r++) { // eslint-disable-line
+        const home = i % 2 === 0 ? round[j][r][0] : round[j][r][1];
+        const away = i % 2 === 0 ? round[j][r][1] : round[j][r][0];
+        const currentRound = (j + 1) + (i * tl);
+        matches.push([home.id, home.name, away.id, away.name, currentRound, tournament.id]);
+      }
+    }
+  }
+  const q = `INSERT INTO matches(homeTeamId, homeTeamName, awayTeamId, awayTeamName, round, tournamentid)
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+
+  const inserts = matches.map(match => query(q, match));
+
+  const m = await Promise.all(inserts);
+  tournament.matches = m.map(r => r.rows[0]);
+  return res.status(201).json(tournament);
 }
 
 

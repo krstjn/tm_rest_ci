@@ -9,9 +9,7 @@ app.use(express.json());
 const users = require('./users');
 const { validateUser } = require('./validation');
 
-const {
-  JWT_SECRET: jwtSecret,
-} = process.env;
+const { JWT_SECRET: jwtSecret } = process.env;
 
 if (!jwtSecret) {
   console.error('JWT_SECRET not registered in .env');

@@ -34,7 +34,9 @@ CREATE TABLE matches (
   played boolean default false,
   round integer not null,
   awayTeamId integer REFERENCES teams(id),
+  awayTeamName varchar(255) NOT NULL,
   homeTeamId integer REFERENCES teams(id),
+  homeTeamName varchar(255) NOT NULL,
   tournamentId integer REFERENCES tournaments(id)
 );
 
