@@ -98,7 +98,14 @@ async function tournamentsPostRoute(req, res) {
   if (validationMessage.length > 0) {
     return res.status(400).json({ errors: validationMessage, success: false });
   }
+  console.log(teams);
   const { user } = req;
+
+  let teamsList = teams;
+  if (typeof teams !== 'object' && typeof teams === 'string') {
+    teamsList = teams.substr(1, teams.length - 2).split(',');
+  }
+  console.log(teamsList);
 
   const columns = [
     'name',
@@ -136,13 +143,12 @@ async function tournamentsPostRoute(req, res) {
   const tournament = result.rows[0];
   const tq = 'INSERT INTO teams (name, tournamentId) values ($1, $2) RETURNING *';
 
-  const updates = teams.map(async (team) => {
-    return query(tq, [xss(team.name), tournament.id]);
-  });
+  const updates = teamsList.map(async team => query(tq, [xss(team.trim()), tournament.id]));
 
   const t = await Promise.all(updates);
 
   tournament.teams = t.map(r => r.rows[0]);
+  tournament.matches = [];
   return res.status(201).json(tournament);
 }
 
