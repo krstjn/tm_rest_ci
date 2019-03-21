@@ -9,7 +9,7 @@ const { Client } = require('pg');
  * @returns {Promise} Promise representing the result of the SQL query
  */
 async function query(sqlQuery, values = []) {
-  const connectionString = 'postgres://notandi:123@localhost:5432/tmrest'; //process.env.DATABASE_URL;
+  const connectionString = process.env.DATABASE_URL;
 
   const client = new Client({ connectionString });
   await client.connect();

@@ -218,7 +218,7 @@ async function unsubscribeRoute(req, res) {
 
   const { id } = req.params;
 
-  const q = 'DELETE from subscriptions WHERE userid = $1 AND tournamentid = $2)';
+  const q = 'DELETE from subscriptions WHERE userid = $1 AND tournamentid = $2';
 
   const result = await query(q, [user.id, xss(id)]);
 
@@ -368,6 +368,27 @@ async function startTournamentPostRoute(req, res) {
   return res.status(201).json(tournament);
 }
 
+async function tournamentDeleteRoute(req, res) {
+  const { id } = req.params;
+
+  const { user } = req;
+
+  let result;
+  try {
+    result = await query('DELETE FROM tournaments WHERE id = $1 AND userid = $2', [id, user.id]);
+  } catch (e) {
+    result = null;
+  }
+
+  if (!result) {
+    res.status(404).json({ error: 'Tournament not found' });
+  }
+  await query('DELETE FROM teams WHERE tournamentid = $1', [id]);
+  await query('DELETE FROM matches WHERE tournamentid = $1', [id]);
+  await query('DELTE FROM subscriptions WHERE tournamentid = $1', [id]);
+
+  return res.status(204).json({});
+}
 
 module.exports = {
   getTournament,
@@ -380,4 +401,5 @@ module.exports = {
   tournamentPatchRoute,
   matchPatchRoute,
   startTournamentPostRoute,
+  tournamentDeleteRoute,
 };
