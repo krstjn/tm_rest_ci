@@ -9,6 +9,7 @@ const {
   tournamentsPostRoute,
   addTeamRoute,
   subscribeRoute,
+  unsubscribeRoute,
   tournamentPatchRoute,
   matchPatchRoute,
   startTournamentPostRoute,
@@ -52,6 +53,7 @@ router.post('/tournaments', requireAuth, catchErrors(tournamentsPostRoute));
 router.get('/tournaments/:id', catchErrors(tournamentRoute));
 router.post('/tournaments/:id/team', requireAuth, catchErrors(addTeamRoute));
 router.post('/tournaments/:id/sub', requireAuth, catchErrors(subscribeRoute));
+router.post('/tournaments/:id/unsub', requireAuth, catchErrors(unsubscribeRoute));
 router.post('/tournaments/:id/start', requireAuth, catchErrors(startTournamentPostRoute));
 router.patch('/tournaments/:id/edit', requireAuth, catchErrors(tournamentPatchRoute));
 router.patch('/tournaments/:id/match/:matchId', requireAuth, catchErrors(matchPatchRoute))

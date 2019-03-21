@@ -213,6 +213,22 @@ async function subscribeRoute(req, res) {
   res.status(200).json(profile);
 }
 
+async function unsubscribeRoute(req, res) {
+  const { user } = req;
+
+  const { id } = req.params;
+
+  const q = 'DELETE from subscriptions WHERE userid = $1 AND tournamentid = $2)';
+
+  const result = await query(q, [user.id, xss(id)]);
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ error: 'Tournament not found' });
+  }
+
+  return res.status(204).json({});
+}
+
 async function tournamentPatchRoute(req, res) {
   const validationMessage = []; // validateTournament(req.body);
   const { id } = req.params;
@@ -268,8 +284,6 @@ async function tournamentPatchRoute(req, res) {
 }
 
 async function matchPatchRoute(req, res) {
-
-
   const validationMessage = []; // validateTournament(req.body);
   const { id, matchId } = req.params;
   const { awayTeamScore, homeTeamScore, location, played, round } = req.body;
@@ -362,6 +376,7 @@ module.exports = {
   tournamentRoute,
   addTeamRoute,
   subscribeRoute,
+  unsubscribeRoute,
   tournamentPatchRoute,
   matchPatchRoute,
   startTournamentPostRoute,
