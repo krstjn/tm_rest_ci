@@ -29,6 +29,10 @@ async function userRoute(req, res) {
   return res.status(200).json(data);
 }
 
+async function usersRoute(req, res) {
+
+}
+
 module.exports = {
   getProfile,
   userRoute,

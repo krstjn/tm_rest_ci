@@ -13,7 +13,7 @@ CREATE TABLE tournaments (
   maxTeams integer,
   rounds integer default 2,
   signupexpiration timestamp with time zone default null,
-  sport integer default 1,
+  sport integer default 0,
   public boolean default true,
   userID integer NOT NULL REFERENCES users(id)
 );

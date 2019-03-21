@@ -54,6 +54,6 @@ router.post('/tournaments/:id/team', requireAuth, catchErrors(addTeamRoute));
 router.post('/tournaments/:id/sub', requireAuth, catchErrors(subscribeRoute));
 router.post('/tournaments/:id/start', requireAuth, catchErrors(startTournamentPostRoute));
 router.patch('/tournaments/:id/edit', requireAuth, catchErrors(tournamentPatchRoute));
-router.patch('/tournaments/:id/match/:matchid', requireAuth, catchErrors(matchPatchRoute))
+router.patch('/tournaments/:id/match/:matchId', requireAuth, catchErrors(matchPatchRoute))
 
 module.exports = router;
