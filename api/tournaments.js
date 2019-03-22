@@ -385,7 +385,7 @@ async function tournamentDeleteRoute(req, res) {
   }
   await query('DELETE FROM teams WHERE tournamentid = $1', [id]);
   await query('DELETE FROM matches WHERE tournamentid = $1', [id]);
-  await query('DELTE FROM subscriptions WHERE tournamentid = $1', [id]);
+  await query('DELETE FROM subscriptions WHERE tournamentid = $1', [id]);
 
   return res.status(204).json({});
 }

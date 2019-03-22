@@ -52,7 +52,7 @@ router.get('/profile', requireAuth, catchErrors(userRoute));
 router.get('/tournaments', catchErrors(tournamentsRoute));
 router.post('/tournaments', requireAuth, catchErrors(tournamentsPostRoute));
 router.get('/tournaments/:id', catchErrors(tournamentRoute));
-router.delete('/tournaments/:id', catchErrors(tournamentDeleteRoute));
+router.delete('/tournaments/:id', requireAuth, catchErrors(tournamentDeleteRoute));
 router.post('/tournaments/:id/team', requireAuth, catchErrors(addTeamRoute));
 router.post('/tournaments/:id/sub', requireAuth, catchErrors(subscribeRoute));
 router.delete('/tournaments/:id/sub', requireAuth, catchErrors(unsubscribeRoute));
