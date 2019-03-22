@@ -379,10 +379,14 @@ async function tournamentDeleteRoute(req, res) {
     return res.status(404).json({ error: 'Tournament not found' });
   }
 
+  if (user.id !== tournament.userid && !user.admin) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   await query('DELETE FROM matches WHERE tournamentid = $1', [id]);
   await query('DELETE FROM teams WHERE tournamentid = $1', [id]);
   await query('DELETE FROM subscriptions WHERE tournamentid = $1', [id]);
-  await query('DELETE FROM tournaments WHERE id = $1 AND userid = $2 ', [id, user.id]);
+  await query('DELETE FROM tournaments WHERE id = $1', [id]);
 
   return res.status(204).json({});
 }
