@@ -373,19 +373,16 @@ async function tournamentDeleteRoute(req, res) {
 
   const { user } = req;
 
-  let result;
-  try {
-    result = await query('DELETE FROM tournaments WHERE id = $1 AND userid = $2', [id, user.id]);
-  } catch (e) {
-    result = null;
+  const tournament = await getTournament(id);
+
+  if (!tournament) {
+    return res.status(404).json({ error: 'Tournament not found' });
   }
 
-  if (!result) {
-    res.status(404).json({ error: 'Tournament not found' });
-  }
-  await query('DELETE FROM teams WHERE tournamentid = $1', [id]);
   await query('DELETE FROM matches WHERE tournamentid = $1', [id]);
+  await query('DELETE FROM teams WHERE tournamentid = $1', [id]);
   await query('DELETE FROM subscriptions WHERE tournamentid = $1', [id]);
+  await query('DELETE FROM tournaments WHERE id = $1 AND userid = $2 ', [id, user.id]);
 
   return res.status(204).json({});
 }

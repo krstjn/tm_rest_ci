@@ -1,14 +1,14 @@
 
 @tm_host = http://localhost:3000
-@token =
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTUzMTgzNjY1fQ.LNrDy3NPadLwdgNH_500X-EdtE3ROZkvzq6W2RlUKFM
 
 ###
 POST {{tm_host}}/login
 Content-Type: application/json
 
 {
-  "username": "",
-  "password": ""
+  "username": "admin",
+  "password": "admin"
 }
 
 ###
@@ -26,26 +26,6 @@ Authorization: Bearer {{token}}
   "sport": 2,
   "isPublic": true,
   "teams": [
-    {
-      "name": "Q",
-      "id": null
-    },
-    {
-      "name": "W",
-      "id": null
-    },
-    {
-      "name": "E",
-      "id": null
-    },
-    {
-      "name": "R",
-      "id": null
-    },
-    {
-      "name": "T",
-      "id": null
-    }
   ]
 }
 
@@ -69,5 +49,44 @@ POST {{tm_host}}/tournaments/3/sub
 Authorization: Bearer {{token}}
 
 ###
-POST {{tm_host}}/tournaments/2/sub
+POST {{tm_host}}/tournaments/3/unsub
 Authorization: Bearer {{token}}
+###
+POST {{tm_host}}/tournaments/1/start
+Authorization: Bearer {{token}}
+###
+POST {{tm_host}}/tournaments
+Authorization: Bearer {{token}}
+
+{
+  "name": "auth test",
+  "maxTeams": 4,
+  "rounds": 2
+}
+
+###
+
+PATCH {{tm_host}}/tournaments/1/edit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Patched again 2"
+}
+
+###
+
+PATCH {{tm_host}}/tournaments/2/match/15
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "homeTeamScore": 3,
+  "awayTeamScore": 3
+}
+
+###
+DELETE {{tm_host}}/tournaments/9
+Authorization: Bearer {{token}}
+
+
