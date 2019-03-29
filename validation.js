@@ -1,20 +1,9 @@
 const users = require('./users');
 const isISO8601 = require('validator/lib/isISO8601');
 
-const invalidField = (s, maxlen) => {
-  if (s !== undefined && typeof s !== 'string') {
-    return true;
-  }
-
-  if (maxlen && s && s.length) {
-    return s.length > maxlen;
-  }
-
-  return false;
-};
 const isEmpty = s => s != null && !s;
 
-async function validateUser({ username, password, name }, patch = false) {
+async function validateUser({ username, password }, patch = false) {
   const validationMessages = [];
 
   // can't patch username
@@ -49,10 +38,7 @@ async function validateUser({ username, password, name }, patch = false) {
 function validateTournament({
   name,
   signUpExpiration,
-  isPublic = true,
-  maxTeams,
-  rounds,
-} = {}, id = null, patch = false) {
+} = {}, patch = false) {
   const errors = [];
 
   if (!patch || name || isEmpty(name)) {

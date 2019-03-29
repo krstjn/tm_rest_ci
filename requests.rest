@@ -2,7 +2,7 @@
 @tm_host = http://localhost:3000
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTUzMTgzNjY1fQ.LNrDy3NPadLwdgNH_500X-EdtE3ROZkvzq6W2RlUKFM
 
-###
+### Login : Should return 200
 POST {{tm_host}}/login
 Content-Type: application/json
 
@@ -11,10 +11,13 @@ Content-Type: application/json
   "password": "admin"
 }
 
-###
+### GET /tournament : Should return 200
+#   Expected output is a
 
 {{tm_host}}/tournaments
-###
+
+
+### POST /tournaments : Should return 200
 POST {{tm_host}}/tournaments
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -76,7 +79,7 @@ Content-Type: application/json
 
 ###
 
-PATCH {{tm_host}}/tournaments/2/match/15
+PATCH {{tm_host}}/tournaments/1/match/17
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -88,5 +91,9 @@ Content-Type: application/json
 ###
 DELETE {{tm_host}}/tournaments/9
 Authorization: Bearer {{token}}
+
+
+###
+postgres://hhftkujkhjkosw:0bc94d41d8eb54f39fed104e98ac9b6acae510fabf98295749379fc55c9cf8f4@ec2-54-247-85-251.eu-west-1.compute.amazonaws.com:5432/de5rnl6a92hbv
 
 

@@ -319,7 +319,8 @@ async function matchPatchRoute(req, res) {
   const values = [matchId, id, ...filteredValues];
   const q = `
     UPDATE matches
-    SET ${updates} WHERE id = $1 AND tournamentid = $2
+    SET ${updates}
+    WHERE id = $1 AND tournamentid = $2
     RETURNING *`;
 
   const result = await query(q, values);
