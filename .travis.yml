@@ -20,4 +20,4 @@ deploy:
   api_key:
     secure: $SECURE
   app:
-    develop: tmrestci-dev
+    develop: tmrestci
