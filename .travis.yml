@@ -19,6 +19,5 @@ deploy:
   provider: heroku
   api_key:
     secure: $SECURE
-  on:
-    all-branches: true
-  app: tmrest-dev
+  app:
+    develop: tmrestci-dev
