@@ -19,4 +19,4 @@ deploy:
   provider: heroku
   api_key:
     secure: $SECURE
-  app: tmrest
+  app: tmrest-dev
